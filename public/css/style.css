@@ -2,7 +2,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Righteous&display=swap');
 
-
+body {
+    font-family: "Poppins", "sans-serif" !important;
+}
 
 /* Navbar Styles */
 .navbar {
