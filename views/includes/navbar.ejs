@@ -1,0 +1,250 @@
+<nav class="navbar navbar-expand-md navbar-light sticky-top border-bottom" style="background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <a class="navbar-brand" href="/listings" style="font-size: 24px; color: #ff0077; font-weight: 600; transition: all 0.3s ease;"> 
+        <i class="fa-solid fa-house" style="color: #ff0077;"></i> Rentwala 
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <!-- <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a> -->
+        <a class="nav-item nav-link" href="/listings" style="color: #333; font-weight: 500; padding: 0.5rem 1rem; transition: all 0.3s ease;">Explore</a>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <form action="/listings" method="GET" class="search-form">
+          <div class="search-input-group">
+            <input type="text" name="q" class="search-input" placeholder="Search properties..." aria-label="Search">
+            <button type="submit" class="search-button">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="navbar-nav ml-auto">
+        <a class="nav-item nav-link" href="/listings/new" style="color: #ff0077; font-weight: 500; padding: 0.5rem 1rem; transition: all 0.3s ease;"> 
+            <i class="fa-solid fa-plus"></i> Add New Property
+        </a>
+        <% if(!currentUser){ %>
+        <a href="/signup" class="nav-item nav-link" style="color: #333; font-weight: 500; padding: 0.5rem 1rem; transition: all 0.3s ease;"> 
+            <i class="fa-solid fa-user"></i> Sign Up
+        </a>
+        <a class="nav-item nav-link" href="/login" style="color: #333; font-weight: 500; padding: 0.5rem 1rem; transition: all 0.3s ease;"> 
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+        <% } else { %>
+        <div class="user-menu">
+            <div class="user-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa-solid fa-user-circle"></i>
+                <span class="username"><%= currentUser.username %></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-menu">
+                <!-- <a class="dropdown-item" href="/profile">
+                    <i class="fa-solid fa-user"></i> Profile
+                </a> -->
+                <a class="dropdown-item" href="/listings">
+                    <i class="fa-solid fa-list"></i> My Listings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </div>
+        <% } %>
+      </div>
+
+    </div>
+
+<!-- <div class="navbar-nav">
+    <a href="/signup" class="nav-item nav-link">Sign Up</a>
+    <a class="nav-item nav-link" href="/login">Login</a>
+    <a class="nav-item nav-link" href="/logout">Logout</a>
+</div> -->
+
+</nav>
+
+<style>
+.navbar-nav .nav-link:hover {
+    color: #ff0077 !important;
+    transform: translateY(-2px);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.navbar {
+    padding: 0.8rem 2rem;
+    background: #ffffff !important;
+}
+
+.navbar-collapse {
+    background: #ffffff;
+    z-index: 1000;
+}
+
+/* Search Bar Styles */
+.search-container {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 2rem;
+}
+
+.search-form {
+    width: 100%;
+}
+
+.search-input-group {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 25px;
+    padding: 0.3rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.search-input-group:focus-within {
+    box-shadow: 0 3px 8px rgba(255, 0, 119, 0.2);
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    background: transparent;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.search-button {
+    background: #ff0077;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-button:hover {
+    background: #ff4d94;
+    transform: scale(1.05);
+}
+
+/* User Menu Styles */
+.user-menu {
+    position: relative;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    background: rgba(255, 0, 119, 0.1);
+}
+
+.user-info:hover {
+    background: rgba(255, 0, 119, 0.2);
+}
+
+.user-info i.fa-user-circle {
+    color: #ff0077;
+    font-size: 1.2rem;
+}
+
+.username {
+    color: #333;
+    font-weight: 500;
+}
+
+.user-info i.fa-chevron-down {
+    color: #666;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.user-info:hover i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0.5rem;
+    min-width: 200px;
+    margin-top: 0.5rem;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    color: #333;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item i {
+    color: #ff0077;
+    width: 20px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 0, 119, 0.1);
+    color: #ff0077;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: #eee;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .navbar-nav .nav-link {
+        padding: 0.5rem 0;
+    }
+    .search-container {
+        margin: 1rem 0;
+        max-width: 100%;
+    }
+    .user-info {
+        padding: 0.5rem;
+    }
+    .username {
+        display: none;
+    }
+}
+</style>

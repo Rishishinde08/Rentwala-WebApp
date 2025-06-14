@@ -1,0 +1,383 @@
+<% layout('/layouts/boilerplate.ejs') %> 
+
+
+<body>
+
+
+
+    <!-- <p><%= success %></p> -->
+    <div class="page-header">
+        <h1>Rentwala</h1>
+        <p>Your one-stop rental solution</p>
+<!-- <p>आपका भरोसेमंद किराया साथी</p>
+<p>तुमचा विश्वासू भाडेकरू साथी</p> -->
+        <div class="header-underline"></div>
+    </div>
+
+    <% if(typeof searchQuery !== 'undefined') { %>
+        <div class="search-results-header">
+            <h2>Search Results for "<%= searchQuery %>"</h2>
+            <p class="search-count"><%= searchCount %> properties found</p>
+        </div>
+    <% } %>
+
+   
+
+    <div class="filter-container">
+        <div class="filter-scroll">
+            <div class="filter-item">
+                
+                <i class="fa-solid fa-fire"></i>
+                <span>Trending</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-bed"></i>
+                <span>Rooms</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-building"></i>
+                <span>Apartments</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Houses</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-city"></i>
+                <span>Iconic Cities</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-mountain"></i>
+                <span>Mountain View</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-umbrella-beach"></i>
+                <span>Beachfront</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-person-swimming"></i>
+                <span>Swimming Pool</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-wifi"></i>
+                <span>WiFi</span>
+            </div>
+            <div class="filter-item">
+                <i class="fa-solid fa-parking"></i>
+                <span>Parking</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- <form action="/listings/new" method="GET">
+        <button>Add New Listing</button>
+    </form> -->
+    <div class="card-container">
+        <% for(let listing of allListings) { %>
+        <a href="/listings/<%= listing._id %>" class="card-link">
+            <div class="card">
+                <div class="card-img-container">
+                    <img class="card-img" src="<%= listing.image.url %>" alt="<%= listing.title %>">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><%= listing.title %></h5>
+                    <div class="card-details">
+                        <p class="price">&#8377; <%= listing.price.toLocaleString("en-IN") %></p>
+                        <p class="location"><i class="fa-solid fa-location-dot"></i> <%= listing.location %></p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <% } %>
+    </div>
+
+   
+
+   
+</body>
+
+<style>
+.page-header {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    position: relative;
+}
+
+.page-header> p {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+    font-family: "Righteous", cursive;
+}
+
+.page-header h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0;
+    /* font-family: 'Berkshire Swash', cursive; */
+    font-family: "Righteous", cursive;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(
+        to right,
+        #ff0077,
+        #ffc44d,
+        #ffa880,
+        #4de4ff,
+        #ff0077
+    );
+    background-size: 200% auto;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: colorRotate 3s linear infinite;
+}
+
+.header-underline {
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, #ff0077, #ff4d94);
+    margin: 0.5rem auto;
+    border-radius: 2px;
+}
+
+@keyframes colorRotate {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header {
+        padding: 1.5rem 0 1rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .header-underline {
+        width: 80px;
+        height: 3px;
+    }
+}
+
+.filter-container {
+    padding: 1rem 0;
+    margin: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding: 0.5rem 1rem;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.filter-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.filter-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.filter-item i {
+    font-size: 1.5rem;
+    color: #ff0077;
+}
+
+.filter-item span {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Card Container Styles */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    background: white;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.card-img-container {
+    position: relative;
+    width: 100%;
+    padding-top: 40%; /* More horizontal aspect ratio */
+    overflow: hidden;
+}
+
+.card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-img {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 0.8rem;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ff0077;
+    margin: 0;
+}
+
+.location {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.location i {
+    color: #ff0077;
+}
+
+@media (max-width: 1200px) {
+    .card-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .card-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .card-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 1rem;
+        gap: 0.8rem;
+    }
+    
+    .card-body {
+        padding: 0.6rem;
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+    }
+    
+    .price {
+        font-size: 1rem;
+    }
+    
+    .location {
+        font-size: 0.8rem;
+    }
+    
+    .filter-scroll {
+        gap: 1rem;
+    }
+    
+    .filter-item {
+        min-width: 70px;
+        padding: 0.5rem;
+    }
+    
+    .filter-item i {
+        font-size: 1.2rem;
+    }
+    
+    .filter-item span {
+        font-size: 0.8rem;
+    }
+}
+
+.search-results-header {
+    text-align: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+}
+
+.search-results-header h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.search-count {
+    color: #666;
+    font-size: 1rem;
+}
+</style>
+
+

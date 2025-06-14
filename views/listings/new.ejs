@@ -1,0 +1,224 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+<body>
+    <div class="edit-form-container">
+        <div class="edit-form-box">
+            <div class="form-header">
+                <i class="fa-solid fa-plus-circle" style="color: #ff0077; font-size: 2rem;"></i>
+                <h1>New Listing</h1>
+                <p>Create your property listing</p>
+            </div>
+
+            <form action="/listings" method="POST" class="edit-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">
+                        <i class="fa-solid fa-heading"></i>
+                        Title
+                    </label>
+                    <input type="text" name="listing[title]" id="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">
+                        <i class="fa-solid fa-align-left"></i>
+                        Description
+                    </label>
+                    <textarea name="listing[description]" id="description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">
+                        <i class="fa-solid fa-image"></i>
+                        Upload Image
+                    </label>
+                    <div class="image-upload">
+                        <input type="file" name="listing[image]" id="image" accept="image/*" required>
+                        <p class="image-hint">Upload a high-quality image of your property</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                            Price
+                        </label>
+                        <input type="number" name="listing[price]" id="price" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Location
+                        </label>
+                        <input type="text" name="listing[location]" id="location" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="country">
+                        <i class="fa-solid fa-globe"></i>
+                        Country
+                    </label>
+                    <input type="text" name="listing[country]" id="country" required>
+                </div>
+
+                <button type="submit" class="btn-update">
+                    <i class="fa-solid fa-plus"></i>
+                    Create Listing
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+<style>
+.edit-form-container {
+    min-height: calc(100vh - 76px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    padding: 2rem;
+}
+
+.edit-form-box {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    transition: transform 0.3s ease;
+}
+
+.edit-form-box:hover {
+    transform: translateY(-5px);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-header h1 {
+    color: #333;
+    font-size: 2rem;
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+}
+
+.form-header p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+label {
+    color: #333;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+label i {
+    color: #ff0077;
+}
+
+input, textarea {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #ff0077;
+    box-shadow: 0 0 0 2px rgba(255, 0, 119, 0.1);
+    outline: none;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.image-hint {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.btn-update {
+    background: #ff0077;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.btn-update:hover {
+    background: #ff4d94;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .edit-form-box {
+        padding: 2rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-form-box {
+        padding: 1.5rem;
+    }
+    
+    .form-header h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>

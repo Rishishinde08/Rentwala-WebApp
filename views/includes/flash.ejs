@@ -1,0 +1,64 @@
+<% if(success && success.length) { %>
+    <div class="flash-message success">
+        <%= success %>
+    </div>
+<% } %>
+
+<% if(error && error.length) { %>
+    <div class="flash-message error">
+        <%= error %>
+    </div>
+<% } %>
+
+<style>
+    .flash-message {
+        position: fixed;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 30px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 100000;
+        animation: slideDown 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+        color: white;
+        font-weight: 500;
+        min-width: 300px;
+        text-align: center;
+    }
+
+    .flash-message.success {
+        background-color: #4CAF50;
+        border-left: 5px solid #388E3C;
+    }
+
+    .flash-message.error {
+        background-color: #f44336;
+        border-left: 5px solid #d32f2f;
+    }
+
+    @keyframes slideDown {
+        to {
+            top: 50px;
+        }
+    }
+
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessage = document.querySelector('.flash-message');
+        if (flashMessage) {
+            setTimeout(() => {
+                flashMessage.remove();
+            }, 5000);
+        }
+    });
+</script>
+

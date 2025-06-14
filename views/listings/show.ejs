@@ -1,0 +1,522 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+<body>
+    <div class="listing-container">
+        <div class="listing-header">
+            <h1><%= listing.title %></h1>
+            <div class="listing-meta">
+                <span><i class="fa-solid fa-location-dot"></i> <%= listing.location %>, <%= listing.country %></span>
+                <span><i class="fa-solid fa-user"></i> Posted by <%= listing.owner.username %></span>
+            </div>
+        </div>
+
+        <div class="listing-content">
+            <div class="listing-image-container">
+                <img class="listing-image" src="<%= listing.image.url %>" alt="<%= listing.title %>">
+            </div>
+
+            <div class="listing-details">
+                <div class="price-tag">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <span><%= listing.price.toLocaleString("en-IN") %></span>
+                </div>
+
+                <div class="description-section">
+                    <h2>Description</h2>
+                    <p><%= listing.description %></p>
+                </div>
+
+                <% if(currentUser && currentUser._id.equals(listing.owner._id)) { %>
+                <div class="listing-actions">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn-edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Edit Listing
+                    </a>
+                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn-delete">
+                            <i class="fa-solid fa-trash"></i>
+                            Delete Listing
+                        </button>
+                    </form>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <% if(currentUser) { %>
+        <div class="reviews-section">
+            <h2>Add a Review</h2>
+            <form action="/listings/<%= listing._id %>/reviews" method="POST" class="review-form">
+                <div class="form-group">
+                    <label for="comment">Your Review</label>
+                    <textarea name="review[comment]" id="comment" required placeholder="Share your experience..."></textarea>
+                </div>
+
+                <div class="rating-section">
+                    <label>Your Rating</label>
+                    <fieldset class="starability-slot">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="btn-review">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Submit Review
+                </button>
+            </form>
+        </div>
+        <% } %>
+
+        <div class="all-reviews">
+            <h2>Reviews</h2>
+            <% if(listing.reviews && listing.reviews.length > 0) { %>
+                <div class="review-list">
+                    <% for(let review of listing.reviews) { %>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <i class="fa-solid fa-user-circle"></i>
+                                    <h3><%= review.author ? review.author.username : 'Anonymous' %></h3>
+                                </div>
+                                <div class="review-meta">
+                                    <p class="starability-result" data-rating="<%= review.rating %>">
+                                        Rated: <%= review.rating %> stars
+                                    </p>
+                                    <span class="review-date">
+                                        <i class="fa-regular fa-calendar"></i>
+                                        <%= review.createdAt.toLocaleDateString() %>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="review-content">
+                                <p><%= review.comment %></p>
+                            </div>
+                            <% if(currentUser && currentUser._id.equals(review.author._id)) { %>
+                            <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="review-actions">
+                                <button type="submit" class="btn-delete-review">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete Review
+                                </button>
+                            </form>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="no-reviews">
+                    <i class="fa-regular fa-comment-dots"></i>
+                    <p>No reviews yet. Be the first to review!</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <center>
+    <h3>Location</h3>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425872426637!3d40.74076987932881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sGoogle!5e0!3m2!1sen!2sus!4v1623251234567!5m2!1sen!2sus" 
+        width="100%"
+        height="350px" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy">
+        </iframe>
+    </div>
+</center>
+
+
+
+</body>
+
+<style>
+.listing-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.listing-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.listing-header h1 {
+    color: #333;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.listing-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    color: #666;
+}
+
+.listing-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.listing-meta i {
+    color: #ff0077;
+}
+
+.listing-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.listing-image-container {
+    border-radius: 15px;
+    overflow: hidden;
+    /* box-shadow: 0 5px 15px rgba(0,0,0,0.1); */
+}
+
+.listing-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+
+.listing-image:hover {
+    transform: scale(1.02);
+}
+
+.listing-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.price-tag {
+    background: #ff0077;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+}
+
+.description-section h2 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.description-section p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.listing-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-edit, .btn-delete {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-edit {
+    background: #ff0077;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit:hover, .btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.reviews-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+}
+
+.reviews-section h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group textarea {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    min-height: 120px;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea:focus {
+    border-color: #ff0077;
+    box-shadow: 0 0 0 2px rgba(255, 0, 119, 0.1);
+    outline: none;
+}
+
+.rating-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rating-section label {
+    color: #333;
+    font-weight: 500;
+}
+
+.btn-review {
+    background: #ff0077;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-review:hover {
+    background: #ff4d94;
+    transform: translateY(-2px);
+}
+
+.all-reviews {
+    margin-top: 3rem;
+}
+
+.all-reviews h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.review-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.review-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reviewer-info i {
+    color: #ff0077;
+    font-size: 1.5rem;
+}
+
+.reviewer-info h3 {
+    color: #333;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.review-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.review-date {
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.review-content {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.btn-delete-review {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+.btn-delete-review:hover {
+    background: #c82333;
+}
+
+.no-reviews {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.no-reviews i {
+    font-size: 3rem;
+    color: #ff0077;
+    margin-bottom: 1rem;
+}
+
+.no-reviews p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .listing-content {
+        grid-template-columns: 1fr;
+    }
+
+    .listing-header h1 {
+        font-size: 2rem;
+    }
+
+    .listing-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .review-meta {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .listing-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .price-tag {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .listing-actions {
+        flex-direction: column;
+    }
+}
+
+.map-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.map-container iframe {
+    display: block;
+    width: 100%;
+    height: 350px;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .map-container {
+        max-width: 100%;
+        margin: 1rem auto;
+    }
+    
+    .map-container iframe {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .map-container iframe {
+        height: 250px;
+    }
+}
+</style>
+
+
