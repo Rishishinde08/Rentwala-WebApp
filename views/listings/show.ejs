@@ -42,6 +42,11 @@
                 <% } %>
             </div>
         </div>
+        <!-- Payment Button -->
+<button id="rzp-button" class="pay-btn">
+    
+    <i class="fa-solid fa-credit-card"></i> Pay  <%= listing.price %>
+</button>
 
         <% if(currentUser) { %>
         <div class="reviews-section">
@@ -76,6 +81,7 @@
             </form>
         </div>
         <% } %>
+        
 
         <div class="all-reviews">
             <h2>Reviews</h2>
@@ -135,7 +141,31 @@
     </div>
 </center>
 
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+
+
+<script>
+    document.getElementById('rzp-button').onclick = function(e){
+        e.preventDefault();
+        var options = {
+            "key": "<%= process.env.RAZORPAY_KEY_ID %>", // Use your Razorpay Key ID here
+            "amount": 1000, // Amount is in paise (10 INR)
+            "currency": "INR",
+            "name": "Rentwala Demo Payment",
+            "description": "Test Payment",
+            "handler": function (response){
+                alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+            },
+            "theme": {
+                "color": "#ff0077"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+</script>
 
 </body>
 
@@ -516,6 +546,34 @@
     .map-container iframe {
         height: 250px;
     }
+}
+
+.pay-btn {
+    background: linear-gradient(90deg, #ff0077 0%, #ff4d94 100%);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255,0,119,0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 2rem 0 1rem 0;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.pay-btn i {
+    font-size: 1.2rem;
+}
+
+.pay-btn:hover, .pay-btn:focus {
+    background: linear-gradient(90deg, #ff4d94 0%, #ff0077 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(255,0,119,0.18);
+    outline: none;
 }
 </style>
 

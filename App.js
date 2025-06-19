@@ -24,7 +24,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user.js');
 const userRoutes = require('./routes/user.js');
 const isLoggedIn = require('./middleware/isLoggedIn.js');
-
+const Razorpay = require("razorpay");
 
 //USEFUL MIDDLEWARE
 app.set('view engine', 'ejs');
@@ -33,6 +33,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
+
+
+//rozo gatway
+const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
 
 //SESSION MIDDLEWARE
 const sessionConfig = {
